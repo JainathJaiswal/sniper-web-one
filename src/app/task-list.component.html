@@ -1,0 +1,49 @@
+<div class="task-content">
+    <h1 class="page-title">My Tasks</h1>
+    <div class="task-create">
+      <form #taskForm="ngForm" (ngSubmit)="createTask(taskForm)" novalidate>
+        <input type="text" id="name" class="form-control" placeholder="Type a name and press enter..." 
+               required
+               name="name" [(ngModel)]="newTask.name"
+               #title="ngModel" >
+
+      </form>
+    </div>
+
+	
+    <ul class="task-list">
+      <li *ngFor="let task of tasks" [class.completed]="task.completed === true" >
+        <div class="task-row" *ngIf="!editing || editingTask.id != task.id">
+            <a class="task-completed" (click)="toggleCompleted(task)">
+              <i class="material-icons toggle-completed-checkbox"></i> 
+            </a> 
+            <span class="task-name" data-toggle="tooltip" data-placement="top" title="{{task.name}}">
+              {{task.name}} 
+            </span>
+            <span class="task-actions">
+                <a (click)="editTask(task)">
+                  <i class="material-icons edit">edit</i>
+                </a>
+                <a (click)="deleteTask(task.id)">
+                  <i class="material-icons delete">clear</i>
+                </a>
+            </span>
+        </div>
+        <div class="task-edit" *ngIf="editing && editingTask.id === task.id">
+            <input class="form-control" type="text" 
+             [(ngModel)]="editingTask.name" required>
+            <span class="edit-actions">
+                <a (click)="updateTask(editingTask)">
+                  <i class="material-icons">done</i>
+                </a>
+                <a (click)="clearEditing()">
+                  <i class="material-icons">clear</i>
+                </a>
+            </span>
+        </div>
+      </li>
+    </ul> 
+    <div class="no-tasks" *ngIf="tasks && tasks.length == 0">
+        <p>No Todos Found!</p>
+    </div> 
+</div>
